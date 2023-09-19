@@ -8,6 +8,18 @@
 import Foundation
 import Alamofire
 
+// 다양한 Error를 custom하게 만들 수 있음 , 상태코드에 대한 Error
+enum SeSacError: Int, Error {
+    case unauthorized  = 401
+    case permissionDenied = 403
+    case invalidServer = 500
+    case missingParameter = 400
+    
+    
+}
+
+
+
 // final : 암묵적으로 상속이 안되고 재정의도 안되서 다른 곳에서 영향을 미치지 않음
 final class NetworkBasic {
     
@@ -36,7 +48,10 @@ final class NetworkBasic {
                 switch response.result {
                 case .success(let data):
                     completion(.success(data)) // 성공에 대한 데이터만 던짐
-                case .failure(let error):
+                case .failure(_):
+                    // response.response?에서 만약에 nil이 나오면 500을 리턴 해준다.
+                    let statusCode = response.response?.statusCode ?? 500
+                    guard let error = SeSacError(rawValue: statusCode) else { return }
                     completion(.failure(error)) // 실패에 대해서만 던짐
                 }
             }
@@ -54,9 +69,9 @@ final class NetworkBasic {
             .responseDecodable(of: PhotoResult.self) { response in
                 switch response.result {
                 case .success(let data):
-                    completionHandler(data, nil)
+                    completionHandler(.success(data))
                 case .failure(let error):
-                    completionHandler(nil, error)
+                    completionHandler(.failure(error))
                 }
             }
     }
