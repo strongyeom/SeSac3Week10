@@ -14,9 +14,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        NetworkBasic.shared.random { photo, error in
+            // completionHandler로 받게 되면 옵셔널 바인딩을 해줘야함
+            guard let photo = photo else { return }
+        }
+        
+        NetworkBasic.shared.detailPhoto(id: "") { response in
+            switch response {
+            case .success(let success):
+                dump(success)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+        
         
     }
-    
+  
   
 
 }
