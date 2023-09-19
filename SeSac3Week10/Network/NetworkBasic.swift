@@ -20,7 +20,7 @@ final class NetworkBasic {
     // 성공 케이스와 실패케이스 만들어주기 - 매개변수에 2가지를 실어서 보내는것 가능
     // 왜 옵셔널인 이유? - 디코딩 유무에 따라 옵셔널로 대응하면 하나는 nil이면 하나는 성공이기 때문
     // 컴플리션으로 여러가지의 매개변수를 받을때 성공, 실패 케이스만 얻으면 되는데, 다른 불필요한 경우의 수 발생
-    // => Result 타입 : 성공 , 실패 케이스만 가져옴!        @escaping(Photo?, Error?)
+    // => Result 타입 : 성공 , 실패 케이스만 가져옴!         @escaping(Photo?, Error?)
     func request(query: String, completion: @escaping(Result<Photo, Error>) -> Void) { // search Photo
         let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
         let url = "https://api.unsplash.com/search/photos"
@@ -41,8 +41,8 @@ final class NetworkBasic {
                 }
             }
     }
-    
-    func random(completionHandler: @escaping(PhotoResult?, Error?) -> Void) { // random Photo
+    // @escaping (PhotoResult?, Error?)
+    func random(completionHandler: @escaping (Result<PhotoResult,Error>) -> Void) { // random Photo
         let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
         let url = "https://api.unsplash.com/photos/random"
         
