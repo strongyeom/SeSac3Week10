@@ -14,10 +14,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        request(query: "cat")
+        detailPhoto(id: "aBAljYASvrg")
     }
     
-    func request(query: String) {
+    func request(query: String) { // search Photo
         let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
         let url = "https://api.unsplash.com/search/photos"
         
@@ -36,9 +36,45 @@ class ViewController: UIViewController {
                     print(error)
                 }
             }
-      
+    }
+    
+    func random() { // random Photo
+        let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
+        let url = "https://api.unsplash.com/photos/random"
+        
+        // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        
+        // PhotoResult : 구조를 보면 Photo의 구조와 유사함... 하나의 구조체를 추가하지 않고 그저 활용하면 됨
+        AF.request(url, method: .get, headers: headers)
+            .responseDecodable(of: PhotoResult.self) { response in
+                switch response.result {
+                case .success(let data):
+                    dump(data)
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
 
+    // 사진 한장에 대한 자세한 정보를 알고 싶다 detail  aBAljYASvrg
+    func detailPhoto(id: String) { // detail Photo
+        let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
+        let url = "https://api.unsplash.com/photos/\(id)"
+        
+        // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        
+        AF.request(url, method: .get, headers: headers)
+            .responseDecodable(of: PhotoResult.self) { response in
+                switch response.result {
+                case .success(let data):
+                    dump(data)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 
 }
 
@@ -59,5 +95,6 @@ struct PhtoURL :Decodable {
     let full: String
     let thumb: String
 }
+
 
 
