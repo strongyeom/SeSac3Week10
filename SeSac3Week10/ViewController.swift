@@ -23,10 +23,10 @@ class ViewController: UIViewController {
         
         // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
         let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
-        // queryString은 길이 제한이 있어서 간소한 정보만 받을 수 있음
+        // queryString은 길이 제한이 있어서 간소한 정보만 받을 수 있음 -> parameters 사용
         // Post : 대량의 데이터를 서버에 추가하는 역할 <- 광범위한 범위 ex) 1000자 HTTPBody: Parameter
-        // encoding : 파라미터를 queryString으로 보낼 수 있게 도와줌
-        let query = ["query": query]
+        // encoding : 파라미터를 queryString으로 보낼 수 있게 도와줌, default는 .httpBody로 되어 있음
+        let query = ["query": query] // <- 명시적으로 구분
         AF.request(url, method: .get, parameters: query, encoding: URLEncoding(destination: .queryString),headers: headers)
             .responseDecodable(of: Photo.self) { response in
                 switch response.result {
