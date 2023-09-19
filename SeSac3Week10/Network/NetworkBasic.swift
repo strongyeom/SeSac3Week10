@@ -9,13 +9,24 @@ import Foundation
 import Alamofire
 
 // 다양한 Error를 custom하게 만들 수 있음 , 상태코드에 대한 Error
-enum SeSacError: Int, Error {
+enum SeSacError: Int, Error, LocalizedError {
     case unauthorized  = 401
     case permissionDenied = 403
     case invalidServer = 500
     case missingParameter = 400
     
-    
+    var errorDescription: String {
+        switch self {
+        case .unauthorized:
+            return "인증되지 않았습니다."
+        case .permissionDenied:
+            return "올바르지 않은 권한 입니다."
+        case .invalidServer:
+            return "서버 점검 중입니다."
+        case .missingParameter:
+            return "검색어를 입력해주세요"
+        }
+    }
 }
 
 
