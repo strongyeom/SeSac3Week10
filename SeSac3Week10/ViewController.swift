@@ -14,25 +14,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-//        NetworkBasic.shared.random { photo, error in
-//            // completionHandler로 받게 되면 옵셔널 바인딩을 해줘야함
-//          //  guard let photo = photo else { return }
-//            // error가 넘어올때 어떻게 하나요?
-//            // photo가 nil이면 return 되서 error 메세지를 받을 수 없음 ⭐️ early exit 되기 때문!!
-//          //  guard let error = error else { return }
-//
-//        }
-        
-        NetworkBasic.shared.detailPhoto(id: "") { response in
+  
+        Network.shared.request(type: Photo.self, api: .search(query: "cat")) { response in
             switch response {
             case .success(let success):
                 dump(success)
             case .failure(let failure):
-                print(failure)
+                print(failure.errorDescription)
             }
         }
-        
         
     }
   

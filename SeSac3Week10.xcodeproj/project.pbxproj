@@ -18,6 +18,7 @@
 		2677A76F2AB9297A00DE4DBD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2677A76E2AB9297A00DE4DBD /* Alamofire */; };
 		2677A7722AB93CCC00DE4DBD /* NetworkBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */; };
 		2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7742AB964A000DE4DBD /* SesacAPI.swift */; };
+		2677A7772AB9743B00DE4DBD /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7762AB9743B00DE4DBD /* Network.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		2677A7612AB9293A00DE4DBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBasic.swift; sourceTree = "<group>"; };
 		2677A7742AB964A000DE4DBD /* SesacAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SesacAPI.swift; sourceTree = "<group>"; };
+		2677A7762AB9743B00DE4DBD /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			children = (
 				2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */,
 				2677A7742AB964A000DE4DBD /* SesacAPI.swift */,
+				2677A7762AB9743B00DE4DBD /* Network.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			files = (
 				2677A7582AB9293800DE4DBD /* ViewController.swift in Sources */,
 				2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */,
+				2677A7772AB9743B00DE4DBD /* Network.swift in Sources */,
 				2677A7722AB93CCC00DE4DBD /* NetworkBasic.swift in Sources */,
 				2677A7542AB9293800DE4DBD /* AppDelegate.swift in Sources */,
 				2677A7562AB9293800DE4DBD /* SceneDelegate.swift in Sources */,
