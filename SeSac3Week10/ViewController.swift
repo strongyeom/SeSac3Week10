@@ -6,16 +6,15 @@
 //
 
 import UIKit
-import Alamofire
-
 // 네트워크 통신 -> 개선 -> 업데이트
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-  
-        Network.shared.request(type: Photo.self, api: .search(query: "cat")) { response in
+        print(#function)
+        
+        Network.shared.request(type: PhotoResult.self, api: .random) { response in
             switch response {
             case .success(let success):
                 dump(success)
