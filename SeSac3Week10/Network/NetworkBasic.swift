@@ -45,11 +45,11 @@ final class NetworkBasic {
     // 컴플리션으로 여러가지의 매개변수를 받을때 성공, 실패 케이스만 얻으면 되는데, 다른 불필요한 경우의 수 발생
     // => Result 타입 : 성공 , 실패 케이스만 가져옴!         @escaping(Photo?, Error?)
     func request(query: String, completion: @escaping(Result<Photo, Error>) -> Void) { // search Photo
-        let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
+        
         let url = "https://api.unsplash.com/search/photos"
         
         // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(SesacAPI.key)"]
         // queryString은 길이 제한이 있어서 간소한 정보만 받을 수 있음 -> parameters 사용
         // Post : 대량의 데이터를 서버에 추가하는 역할 <- 광범위한 범위 ex) 1000자 HTTPBody: Parameter
         // encoding : 파라미터를 queryString으로 보낼 수 있게 도와줌, default는 .httpBody로 되어 있음
@@ -69,11 +69,11 @@ final class NetworkBasic {
     }
     // @escaping (PhotoResult?, Error?)
     func random(completionHandler: @escaping (Result<PhotoResult,Error>) -> Void) { // random Photo
-        let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
+        
         let url = "https://api.unsplash.com/photos/random"
         
         // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(SesacAPI.key)"]
         
         // PhotoResult : 구조를 보면 Photo의 구조와 유사함... 하나의 구조체를 추가하지 않고 그저 활용하면 됨
         AF.request(url, method: .get, headers: headers)
@@ -89,11 +89,11 @@ final class NetworkBasic {
 
     // 사진 한장에 대한 자세한 정보를 알고 싶다 detail  aBAljYASvrg
     func detailPhoto(id: String, completionHandler: @escaping(Result<PhotoResult, Error>) -> Void) { // detail Photo
-        let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
+        
         let url = "https://api.unsplash.com/photos/\(id)"
         
         // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(SesacAPI.key)"]
         
         AF.request(url, method: .get, headers: headers)
             .responseDecodable(of: PhotoResult.self) { response in
