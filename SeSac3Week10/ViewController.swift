@@ -14,14 +14,20 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        request(query: "cat")
     }
     
-    func request() {
+    func request(query: String) {
         let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
-        let url = "https://api.unsplash.com/search/photos?query=cat&client_id=\(key)"
+        let url = "https://api.unsplash.com/search/photos"
         
-        AF.request(url, method: .get)
+        // Header에 Key를 숨기는 것이 URL String에 바로 넣는것보다 안전함
+        let headers: HTTPHeaders = ["Authorization": "Client-ID \(key)"]
+        // queryString은 길이 제한이 있어서 간소한 정보만 받을 수 있음
+        // Post : 대량의 데이터를 서버에 추가하는 역할 <- 광범위한 범위 ex) 1000자 HTTPBody: Parameter
+        // encoding : 파라미터를 queryString으로 보낼 수 있게 도와줌
+        let query = ["query": query]
+        AF.request(url, method: .get, parameters: query, encoding: URLEncoding(destination: .queryString),headers: headers)
             .responseDecodable(of: Photo.self) { response in
                 switch response.result {
                 case .success(let data):
