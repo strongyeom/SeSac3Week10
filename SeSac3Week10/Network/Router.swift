@@ -45,6 +45,16 @@ enum Router: URLRequestConvertible {
         return .get
     }
     
+    var query: [String: String] {
+        switch self {
+        case .search(let query):
+            return ["query": query]
+        case .random, .detailPhoto(_):
+            // 빈값을 적용해준다.
+            return ["":""]
+        }
+    }
+    
     // asURLRequest() 만 외부에서 사용할 것이기 때문에 그 외의 프로퍼티는 private으로 설정해준다.
     func asURLRequest() throws -> URLRequest {
         
@@ -54,6 +64,9 @@ enum Router: URLRequestConvertible {
         // 헤더 및 메서드 추가
         request.headers = header
         request.method = method
+        
+        // encoding ~ 했던것 처럼 추가 코드 필요, 오픈 API 사용시 URLEncodedFormParameterEncoder 많이 씀
+        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
         
         // 내부에서 만들어 놓은 url : endPoint 사용
        // var request = URLRequest(url: url)

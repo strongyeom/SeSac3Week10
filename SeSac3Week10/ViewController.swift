@@ -23,10 +23,24 @@ class ViewController: UIViewController {
             }
         }
         
+        
+        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
+            switch response {
+            case .success(let success):
+                dump(success)
+            case .failure(let failure):
+                print(failure.errorDescription)
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
     }
-  
-  
-
 }
 
 // Codable : Decodable(외부에 있는 데이터를 우리가 사용할 수 있는 형식으로 변환 ) + Encodable(우리가 가지고 있는 데이터를 변환후 외부로 전달 )
