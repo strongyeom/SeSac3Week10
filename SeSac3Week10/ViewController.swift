@@ -11,10 +11,23 @@ import Kingfisher
 
 class ViewController: UIViewController {
     
+    private lazy var scrollView = {
+       let view = UIScrollView()
+        view.backgroundColor = .green
+        // 줌 최소 스케일 설정 - 축소했을때 최소 보장 크기
+        view.minimumZoomScale = 1
+        view.maximumZoomScale = 4
+        view.delegate = self
+        // indicator 설정 off
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        return view
+    }()
+    
     private let imageView = {
         let view = UIImageView(frame: .zero)
         view.backgroundColor = .orange
-        view.contentMode = .scaleToFill
+        view.contentMode = .scaleAspectFit
         return view
     }()
 
@@ -30,14 +43,19 @@ class ViewController: UIViewController {
     }
         
         func configureLayout() {
-            imageView.snp.makeConstraints { make in
+            scrollView.snp.makeConstraints { make in
                 make.size.equalTo(200)
                 make.center.equalToSuperview()
+            }
+            
+            imageView.snp.makeConstraints { make in
+                make.size.equalToSuperview()
             }
         }
         
         func configureView() {
-            view.addSubview(imageView)
+            view.addSubview(scrollView)
+            scrollView.addSubview(imageView)
         }
         
         fileprivate func request() {
@@ -52,6 +70,13 @@ class ViewController: UIViewController {
                     print(failure.errorDescription)
                 }
             }
+    }
+}
+
+extension ViewController : UIScrollViewDelegate {
+    // 줌 했을때 크기를 누가 채워주는데?
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
     }
 }
 
