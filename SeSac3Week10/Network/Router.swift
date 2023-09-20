@@ -1,22 +1,14 @@
 //
-//  SesacAPI.swift
+//  Router.swift
 //  SeSac3Week10
 //
-//  Created by 염성필 on 2023/09/19.
+//  Created by 염성필 on 2023/09/20.
 //
 
 import Foundation
 import Alamofire
 
-
-// URL 구조화 - URLRequestConvertible ( Alamofire에 내장되어 있는 메서드 ) : 커뮤니케이션 용이
-//enum Router: URLRequestConvertible {
-//
-//}
-//
-
-
-enum SesacAPI {
+enum Router: URLRequestConvertible {
     
     private static let key = "R87kkJUhEVTR_QPQo8pQOj7Q7sgWnUP8gTE8h0yOHB0"
     
@@ -29,19 +21,10 @@ enum SesacAPI {
     // endPoint에서 URL로 바뀌기 때문에 String으로 설정
     private var baseURL: String {
         return "https://api.unsplash.com/"
-        // 조건에 따라 다양한 baseURL이 있을 수 있음
-//        switch self {
-//        case .search, .random:
-//            <#code#>
-//        case .random:
-//            <#code#>
-//        case .detailPhoto:
-//            <#code#>
-//        }
-//
     }
     
-    var endPoint: URL {
+    // 외부에서 사용하지 않기 때문에 접근제어자 private 설정
+    private var endPoint: URL {
         switch self {
         case .search:
             return URL(string: baseURL + "search/photos")!
@@ -52,21 +35,15 @@ enum SesacAPI {
         }
     }
     
-    var header: HTTPHeaders {
-        return ["Authorization": "Client-ID \(SesacAPI.key)"]
+    // asURLRequest() 만 외부에서 사용할 것이기 때문에 그 외의 프로퍼티는 private으로 설정해준다.
+    func asURLRequest() throws -> URLRequest {
+        
+        
+        // 내부에서 만들어 놓은 url : endPoint 사용
+        var request = URLRequest(url: endPoint)
+        
+        return request
     }
     
-    var method: HTTPMethod {
-        return .get
-    }
     
-    var query: [String: String] {
-        switch self {
-        case .search(let query):
-            return ["query": query]
-        case .random, .detailPhoto(_):
-            // 빈값을 적용해준다.
-            return ["":""]
-        }
-    }
 }

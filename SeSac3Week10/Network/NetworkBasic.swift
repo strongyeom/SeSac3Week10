@@ -44,7 +44,7 @@ final class NetworkBasic {
     // 왜 옵셔널인 이유? - 디코딩 유무에 따라 옵셔널로 대응하면 하나는 nil이면 하나는 성공이기 때문
     // 컴플리션으로 여러가지의 매개변수를 받을때 성공, 실패 케이스만 얻으면 되는데, 다른 불필요한 경우의 수 발생
     // => Result 타입 : 성공 , 실패 케이스만 가져옴!         @escaping(Photo?, Error?)
-    func request(api: SesacAPI, query: String, completionHandler: @escaping(Result<Photo, SeSacError>) -> Void) { // search Photo
+    func request(api: SesacAPI, completionHandler: @escaping(Result<Photo, SeSacError>) -> Void) { // search Photo
         // queryString은 길이 제한이 있어서 간소한 정보만 받을 수 있음 -> parameters 사용
         // Post : 대량의 데이터를 서버에 추가하는 역할 <- 광범위한 범위 ex) 1000자 HTTPBody: Parameter
         // encoding : 파라미터를 queryString으로 보낼 수 있게 도와줌, default는 .httpBody로 되어 있음
@@ -81,7 +81,7 @@ final class NetworkBasic {
     }
 
     // 사진 한장에 대한 자세한 정보를 알고 싶다 detail
-    func detailPhoto(api: SesacAPI, id: String, completionHandler: @escaping(Result<PhotoResult, SeSacError>) -> Void) { // detail Photo
+    func detailPhoto(api: SesacAPI, completionHandler: @escaping(Result<PhotoResult, SeSacError>) -> Void) { // detail Photo
         
         AF.request(api.endPoint, method: api.method, headers: api.header)
             .responseDecodable(of: PhotoResult.self) { response in

@@ -19,6 +19,7 @@
 		2677A7722AB93CCC00DE4DBD /* NetworkBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */; };
 		2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7742AB964A000DE4DBD /* SesacAPI.swift */; };
 		2677A7772AB9743B00DE4DBD /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7762AB9743B00DE4DBD /* Network.swift */; };
+		26EBDA3C2ABA763800F01B0E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EBDA3B2ABA763800F01B0E /* Router.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBasic.swift; sourceTree = "<group>"; };
 		2677A7742AB964A000DE4DBD /* SesacAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SesacAPI.swift; sourceTree = "<group>"; };
 		2677A7762AB9743B00DE4DBD /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		26EBDA3B2ABA763800F01B0E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				2677A7712AB93CCC00DE4DBD /* NetworkBasic.swift */,
 				2677A7742AB964A000DE4DBD /* SesacAPI.swift */,
 				2677A7762AB9743B00DE4DBD /* Network.swift */,
+				26EBDA3B2ABA763800F01B0E /* Router.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 				2677A7582AB9293800DE4DBD /* ViewController.swift in Sources */,
 				2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */,
 				2677A7772AB9743B00DE4DBD /* Network.swift in Sources */,
+				26EBDA3C2ABA763800F01B0E /* Router.swift in Sources */,
 				2677A7722AB93CCC00DE4DBD /* NetworkBasic.swift in Sources */,
 				2677A7542AB9293800DE4DBD /* AppDelegate.swift in Sources */,
 				2677A7562AB9293800DE4DBD /* SceneDelegate.swift in Sources */,
