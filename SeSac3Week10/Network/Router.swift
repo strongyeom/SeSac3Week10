@@ -19,28 +19,44 @@ enum Router: URLRequestConvertible {
     case detailPhoto(id: String)
     
     // endPoint에서 URL로 바뀌기 때문에 String으로 설정
-    private var baseURL: String {
-        return "https://api.unsplash.com/"
+    // URL 타입으로 설정
+    private var baseURL: URL {
+        return URL(string: "https://api.unsplash.com/")!
     }
     
-    // 외부에서 사용하지 않기 때문에 접근제어자 private 설정
-    private var endPoint: URL {
+    // 외부에서 사용되지 않기 위해 접근제어자 private 설정
+    // path로 설정해서 url 구조 파악
+    private var path: String {
         switch self {
         case .search:
-            return URL(string: baseURL + "search/photos")!
+            return "search/photos"
         case .random:
-            return URL(string: baseURL + "photos/random")!
+            return "photos/random"
         case .detailPhoto(let id):
-            return URL(string: baseURL + "photos/\(id)")!
+            return "photos/\(id)"
         }
+    }
+    
+    private var header: HTTPHeaders {
+        return ["Authorization": "Client-ID \(Router.key)"]
+    }
+    
+    private var method: HTTPMethod {
+        return .get
     }
     
     // asURLRequest() 만 외부에서 사용할 것이기 때문에 그 외의 프로퍼티는 private으로 설정해준다.
     func asURLRequest() throws -> URLRequest {
         
+        // 백업 복구 기능 했을때 appendingPathComponent: path를 명확하게 붙이겠다 사용했었음
+        let url = baseURL.appendingPathComponent(path)
+        var request = URLRequest(url: url)
+        // 헤더 및 메서드 추가
+        request.headers = header
+        request.method = method
         
         // 내부에서 만들어 놓은 url : endPoint 사용
-        var request = URLRequest(url: endPoint)
+       // var request = URLRequest(url: url)
         
         return request
     }
