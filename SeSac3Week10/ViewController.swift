@@ -33,27 +33,28 @@ class ViewController: UIViewController {
         return view
     }()
     
-    
+    let viewModel = ViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
         configureView()
         configureLayout()
-        
         configureGesture()
-        request()
+        viewModel.request { url in
+            self.imageView.kf.setImage(with: url)
+        }
     }
     
     // 제스처 기능 추가
-    func configureGesture() {
+    private func configureGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapGesture))
         // 몇번의 탭을 요구 할 것이냐?
         tap.numberOfTapsRequired = 2
         imageView.addGestureRecognizer(tap)
     }
     
-    @objc func doubleTapGesture() {
+    @objc private func doubleTapGesture() {
         if scrollView.zoomScale == 1 {
             // zoomScale 셋팅
             scrollView.setZoomScale(2, animated: true)
@@ -64,12 +65,12 @@ class ViewController: UIViewController {
     
     
     
-    func configureView() {
+    private func configureView() {
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         scrollView.snp.makeConstraints { make in
             make.size.equalTo(200)
             make.center.equalToSuperview()
@@ -80,19 +81,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func request() {
-        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
-            switch response {
-            case .success(let success):
-                dump(success)
-                
-                // 응답 한 url 기반으로 이미지 뷰에 사진 띄우기
-                self.imageView.kf.setImage(with: URL(string: success.urls.thumb)!)
-            case .failure(let failure):
-                print(failure.errorDescription)
-            }
-        }
-    }
+
     
 }
 
