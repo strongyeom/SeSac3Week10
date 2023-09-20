@@ -6,40 +6,52 @@
 //
 
 import UIKit
-// 네트워크 통신 -> 개선 -> 업데이트
+import SnapKit
+import Kingfisher
 
 class ViewController: UIViewController {
+    
+    private let imageView = {
+        let view = UIImageView(frame: .zero)
+        view.backgroundColor = .orange
+        view.contentMode = .scaleToFill
+        return view
+    }()
 
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
+        configureView()
+        configureLayout()
         
-        Network.shared.request(type: PhotoResult.self, api: .random) { response in
-            switch response {
-            case .success(let success):
-                dump(success)
-            case .failure(let failure):
-                print(failure.errorDescription)
+        request()
+    }
+        
+        func configureLayout() {
+            imageView.snp.makeConstraints { make in
+                make.size.equalTo(200)
+                make.center.equalToSuperview()
             }
         }
         
-        
-        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
-            switch response {
-            case .success(let success):
-                dump(success)
-            case .failure(let failure):
-                print(failure.errorDescription)
-            }
+        func configureView() {
+            view.addSubview(imageView)
         }
         
-        
-        
-        
-        
-        
-        
-        
+        fileprivate func request() {
+            Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
+                switch response {
+                case .success(let success):
+                    dump(success)
+                    
+                    // 응답 한 url 기반으로 이미지 뷰에 사진 띄우기
+                    self.imageView.kf.setImage(with: URL(string: success.urls.thumb)!)
+                case .failure(let failure):
+                    print(failure.errorDescription)
+                }
+            }
     }
 }
 
