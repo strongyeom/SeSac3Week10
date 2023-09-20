@@ -12,7 +12,7 @@ import Kingfisher
 class ViewController: UIViewController {
     
     private lazy var scrollView = {
-       let view = UIScrollView()
+        let view = UIScrollView()
         view.backgroundColor = .green
         // 줌 최소 스케일 설정 - 축소했을때 최소 보장 크기
         view.minimumZoomScale = 1
@@ -28,10 +28,12 @@ class ViewController: UIViewController {
         let view = UIImageView(frame: .zero)
         view.backgroundColor = .orange
         view.contentMode = .scaleAspectFit
+        // 이미지에 터치 액션이 있을때 isUserInteractionEnabled 설정해줘야한다.
+        view.isUserInteractionEnabled = true
         return view
     }()
-
-
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,38 +41,59 @@ class ViewController: UIViewController {
         configureView()
         configureLayout()
         
+        configureGesture()
         request()
     }
-        
-        func configureLayout() {
-            scrollView.snp.makeConstraints { make in
-                make.size.equalTo(200)
-                make.center.equalToSuperview()
-            }
-            
-            imageView.snp.makeConstraints { make in
-                make.size.equalToSuperview()
-            }
-        }
-        
-        func configureView() {
-            view.addSubview(scrollView)
-            scrollView.addSubview(imageView)
-        }
-        
-        fileprivate func request() {
-            Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
-                switch response {
-                case .success(let success):
-                    dump(success)
-                    
-                    // 응답 한 url 기반으로 이미지 뷰에 사진 띄우기
-                    self.imageView.kf.setImage(with: URL(string: success.urls.thumb)!)
-                case .failure(let failure):
-                    print(failure.errorDescription)
-                }
-            }
+    
+    // 제스처 기능 추가
+    func configureGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapGesture))
+        // 몇번의 탭을 요구 할 것이냐?
+        tap.numberOfTapsRequired = 2
+        imageView.addGestureRecognizer(tap)
     }
+    
+    @objc func doubleTapGesture() {
+        if scrollView.zoomScale == 1 {
+            // zoomScale 셋팅
+            scrollView.setZoomScale(2, animated: true)
+        } else {
+            scrollView.setZoomScale(1, animated: true)
+        }
+    }
+    
+    
+    
+    func configureView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+    }
+    
+    func configureLayout() {
+        scrollView.snp.makeConstraints { make in
+            make.size.equalTo(200)
+            make.center.equalToSuperview()
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
+    }
+    
+    func request() {
+        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
+            switch response {
+            case .success(let success):
+                dump(success)
+                
+                // 응답 한 url 기반으로 이미지 뷰에 사진 띄우기
+                self.imageView.kf.setImage(with: URL(string: success.urls.thumb)!)
+            case .failure(let failure):
+                print(failure.errorDescription)
+            }
+        }
+    }
+    
 }
 
 extension ViewController : UIScrollViewDelegate {
