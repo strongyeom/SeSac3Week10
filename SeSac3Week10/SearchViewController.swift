@@ -27,7 +27,6 @@ class SearchViewController : UIViewController {
     }
     
     func configureView() {
-        view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
     }
@@ -63,14 +62,17 @@ class SearchViewController : UIViewController {
     
     func configureLayout() {
         
+        scrollView.backgroundColor = .lightGray
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        contentView.backgroundColor = .white
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView)
-            make.width.equalTo(scrollView.contentLayoutGuide).multipliedBy(1.0)
+            make.width.equalTo(scrollView.snp.width)
         }
     }
+    // 키보드가 올라왔을때 레이아웃이 달라져야 한다면 updataConstraints or remakeConstratinst를 사용하면 됨
 }
 
 
