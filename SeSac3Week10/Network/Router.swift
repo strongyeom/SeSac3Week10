@@ -65,7 +65,7 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-        // encoding ~ 했던것 처럼 추가 코드 필요, 오픈 API 사용시 URLEncodedFormParameterEncoder 많이 씀
+        // encoding ~ 했던것 처럼 추가 코드 필요, 오픈 API 사용시 destination: .methodDependent 많이 씀
         request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
         
         // 내부에서 만들어 놓은 url : endPoint 사용

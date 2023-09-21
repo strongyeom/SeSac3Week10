@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26559C1B2ABBCB3E00354C86 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26559C1A2ABBCB3E00354C86 /* SearchViewController.swift */; };
 		2677A7542AB9293800DE4DBD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7532AB9293800DE4DBD /* AppDelegate.swift */; };
 		2677A7562AB9293800DE4DBD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7552AB9293800DE4DBD /* SceneDelegate.swift */; };
 		2677A7582AB9293800DE4DBD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7572AB9293800DE4DBD /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26559C1A2ABBCB3E00354C86 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2677A7502AB9293800DE4DBD /* SeSac3Week10.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSac3Week10.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2677A7532AB9293800DE4DBD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2677A7552AB9293800DE4DBD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				2677A7532AB9293800DE4DBD /* AppDelegate.swift */,
 				2677A7552AB9293800DE4DBD /* SceneDelegate.swift */,
 				2677A7572AB9293800DE4DBD /* ViewController.swift */,
+				26559C1A2ABBCB3E00354C86 /* SearchViewController.swift */,
 				2677A7592AB9293800DE4DBD /* Main.storyboard */,
 				2677A75C2AB9293A00DE4DBD /* Assets.xcassets */,
 				2677A75E2AB9293A00DE4DBD /* LaunchScreen.storyboard */,
@@ -180,6 +183,7 @@
 				2677A7582AB9293800DE4DBD /* ViewController.swift in Sources */,
 				2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */,
 				2677A7772AB9743B00DE4DBD /* Network.swift in Sources */,
+				26559C1B2ABBCB3E00354C86 /* SearchViewController.swift in Sources */,
 				26EBDA3C2ABA763800F01B0E /* Router.swift in Sources */,
 				2677A7722AB93CCC00DE4DBD /* NetworkBasic.swift in Sources */,
 				2677A7542AB9293800DE4DBD /* AppDelegate.swift in Sources */,
