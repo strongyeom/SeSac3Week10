@@ -14,9 +14,11 @@ import SnapKit
  그렇기 때문에 로드되는 첫번째 VC라면 괜찮지만 다른 VC에서는 지양하는것이 좋음
  */
 
-class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SearchViewController: UIViewController {
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewFlowLayout())
+    
+    var dataSource: UICollectionViewDiffableDataSource<Int, Int>!
     
     var list = Array(1...100)
     
@@ -24,6 +26,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         super.viewDidLoad()
         configureView()
         configureLayout()
+        configureDataSource()
     }
     
     func configureView() {
@@ -31,12 +34,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func configureLayout() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
 
     func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
@@ -46,19 +46,26 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         return layout
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+    func configureDataSource() {
+        
+        let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, Int> { cell, indexPath, itemIdentifier in
+            cell.imageView.image = UIImage(systemName: "flame")
+            cell.label.text = "\(itemIdentifier)번"
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegisteration, for: indexPath, item: itemIdentifier)
+            return cell
+        })
+        
+        var snapShot = NSDiffableDataSourceSnapshot<Int,Int>()
+        snapShot.appendSections([0])
+        snapShot.appendItems(list)
+        dataSource.apply(snapShot)
+        
+        
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return list.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
-        cell.label.text = "\( list[indexPath.item])번"
-        return cell
-    }
+
 }
 
 
