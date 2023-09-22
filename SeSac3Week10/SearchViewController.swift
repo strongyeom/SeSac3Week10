@@ -14,7 +14,7 @@ import SnapKit
  그렇기 때문에 로드되는 첫번째 VC라면 괜찮지만 다른 VC에서는 지양하는것이 좋음
  */
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewFlowLayout())
     
@@ -38,14 +38,44 @@ class SearchViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-
+    
+    //  큰것부터 작은순으로 만들면 편함 section -> group -> item
+    // section 별로 다른 layout을 설정할때 사용
     func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 50, height: 50)
+        
+        // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), heightDimension: .fractionalHeight(1.0))
+        // == Cell
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // fractionalWidth : 상대적인 길이
+        // absolute : 고정 값
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+        // 가이드를 만들어서 Cell을 하나의 틀로 만들어줌 즉 , item을 배치해주는 역할
+        // repeatingSubitem : 반복하려는 Cell
+        // count : group에 몇개를 넣을거니?
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 4)
+        // group내에 간격 설정
+        group.interItemSpacing = .fixed(10)
+        
+       // group을 감싸는 Section이 있음
+        let section = NSCollectionLayoutSection(group: group)
+        // layout.sectionInset과 동일
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        // group과 group 사이의 간격 조정
+        section.interGroupSpacing = 20
+        // section 설정
+        let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
-    
+
+//    func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .vertical
+//        layout.itemSize = CGSize(width: 50, height: 50)
+//        return layout
+//    }
+//
     func configureDataSource() {
         
         let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, Int> { cell, indexPath, itemIdentifier in
