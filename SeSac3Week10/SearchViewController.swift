@@ -43,7 +43,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     //  큰것부터 작은순으로 만들면 편함 section -> group -> item
-    // section 별로 다른 layout을 설정할때 사용
+    // section 별로 다른 layout을 설정할때 사용 aa
     func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
         
         // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
