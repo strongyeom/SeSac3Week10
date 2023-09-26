@@ -16,11 +16,14 @@ import SnapKit
 
 class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
+    var list = ["이모티콘", "새싹" , "추석", "여기는 영등포 청취사 입니다.",
+    "컬렉션 뷰"]
+    
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewFlowLayout())
     
-    var dataSource: UICollectionViewDiffableDataSource<Int, Int>!
+    var dataSource: UICollectionViewDiffableDataSource<Int, String>!
     
-    var list = Array(1...100)
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,41 +47,47 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
     func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
         
         // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), heightDimension: .fractionalHeight(1.0))
+        // ..fractionalHeight , .absolute, .estimated(추정치)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(80), heightDimension: .fractionalHeight(1.0))
         // == Cell
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         // fractionalWidth : 상대적인 길이
         // absolute : 고정 값
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(80), heightDimension: .absolute(30))
         // 가이드를 만들어서 Cell을 하나의 틀로 만들어줌 즉 , item을 배치해주는 역할
         // repeatingSubitem : 반복하려는 Cell
         // count : group에 몇개를 넣을거니?
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 4)
+        // group : 수평으로 몇개의 item을 넣을거냐?
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3)
         // group내에 간격 설정
         group.interItemSpacing = .fixed(10)
         
        // group을 감싸는 Section이 있음
         let section = NSCollectionLayoutSection(group: group)
-        // layout.sectionInset과 동일
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        // contentInsets : CollecetionView 안으로 inset 설정
+        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
         // group과 group 사이의 간격 조정
-        section.interGroupSpacing = 20
-        // section 설정
+        section.interGroupSpacing = 10
+        
+        // 레이아웃 환경 설정
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.scrollDirection = .vertical
+        
+        // section 설정 : collectionviw의 전체적인 레이아웃 설정 가능
         let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        layout.configuration = configuration
+        
         return layout
     }
-
-//    func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.itemSize = CGSize(width: 50, height: 50)
-//        return layout
-//    }
 //
     func configureDataSource() {
         
-        let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, Int> { cell, indexPath, itemIdentifier in
+        let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, String> { cell, indexPath, itemIdentifier in
             cell.imageView.image = UIImage(systemName: "flame")
             cell.label.text = "\(itemIdentifier)번"
         }
@@ -88,13 +97,60 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
             return cell
         })
         
-        var snapShot = NSDiffableDataSourceSnapshot<Int,Int>()
+        var snapShot = NSDiffableDataSourceSnapshot<Int,String>()
         snapShot.appendSections([0])
         snapShot.appendItems(list)
         dataSource.apply(snapShot)
         
         
     }
+    
+        //  큰것부터 작은순으로 만들면 편함 section -> group -> item
+    //    // section 별로 다른 layout을 설정할때 사용
+    //    func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
+    //
+    //        // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
+    //        // ..fractionalHeight , .absolute, .estimated(추정치)
+    //        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), heightDimension: .fractionalHeight(1.0))
+    //        // == Cell
+    //        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    //
+    //        // fractionalWidth : 상대적인 길이
+    //        // absolute : 고정 값
+    //        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+    //        // 가이드를 만들어서 Cell을 하나의 틀로 만들어줌 즉 , item을 배치해주는 역할
+    //        // repeatingSubitem : 반복하려는 Cell
+    //        // count : group에 몇개를 넣을거니?
+    //        // group : 수평으로 몇개의 item을 넣을거냐?
+    //        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 4)
+    //        // group내에 간격 설정
+    //        group.interItemSpacing = .fixed(30)
+    //
+    //       // group을 감싸는 Section이 있음
+    //        let section = NSCollectionLayoutSection(group: group)
+    //        // contentInsets : CollecetionView 안으로 inset 설정
+    //        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
+    //        // group과 group 사이의 간격 조정
+    //        section.interGroupSpacing = 30
+    //
+    //        // 레이아웃 환경 설정
+    //        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+    //        configuration.scrollDirection = .horizontal
+    //
+    //        // section 설정 : collectionviw의 전체적인 레이아웃 설정 가능
+    //        let layout = UICollectionViewCompositionalLayout(section: section)
+    //
+    //        layout.configuration = configuration
+    //
+    //        return layout
+    //    }
+
+    //    func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
+    //        let layout = UICollectionViewFlowLayout()
+    //        layout.scrollDirection = .vertical
+    //        layout.itemSize = CGSize(width: 50, height: 50)
+    //        return layout
+    //    }
 
 }
 

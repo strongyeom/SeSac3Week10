@@ -22,6 +22,7 @@
 		2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7742AB964A000DE4DBD /* SesacAPI.swift */; };
 		2677A7772AB9743B00DE4DBD /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677A7762AB9743B00DE4DBD /* Network.swift */; };
 		26E773932ABD169F00D72E60 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E773922ABD169F00D72E60 /* Constant.swift */; };
+		26EA66362AC2706100F6FE6A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EA66352AC2706100F6FE6A /* Sample.swift */; };
 		26EBDA3C2ABA763800F01B0E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EBDA3B2ABA763800F01B0E /* Router.swift */; };
 		26EBDA3E2ABA9A8E00F01B0E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EBDA3D2ABA9A8E00F01B0E /* ViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		2677A7742AB964A000DE4DBD /* SesacAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SesacAPI.swift; sourceTree = "<group>"; };
 		2677A7762AB9743B00DE4DBD /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		26E773922ABD169F00D72E60 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		26EA66352AC2706100F6FE6A /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		26EBDA3B2ABA763800F01B0E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		26EBDA3D2ABA9A8E00F01B0E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,6 +85,7 @@
 				2677A7552AB9293800DE4DBD /* SceneDelegate.swift */,
 				2677A7572AB9293800DE4DBD /* ViewController.swift */,
 				26559C1A2ABBCB3E00354C86 /* SearchViewController.swift */,
+				26EA66352AC2706100F6FE6A /* Sample.swift */,
 				26559C1C2ABBE10700354C86 /* SearchCollectionViewCell.swift */,
 				2677A7592AB9293800DE4DBD /* Main.storyboard */,
 				2677A75C2AB9293A00DE4DBD /* Assets.xcassets */,
@@ -187,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2677A7582AB9293800DE4DBD /* ViewController.swift in Sources */,
+				26EA66362AC2706100F6FE6A /* Sample.swift in Sources */,
 				2677A7752AB964A000DE4DBD /* SesacAPI.swift in Sources */,
 				2677A7772AB9743B00DE4DBD /* Network.swift in Sources */,
 				26559C1B2ABBCB3E00354C86 /* SearchViewController.swift in Sources */,
