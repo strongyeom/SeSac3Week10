@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 /*
  static vs lazy var
@@ -14,14 +15,14 @@ import SnapKit
  그렇기 때문에 로드되는 첫번째 VC라면 괜찮지만 다른 VC에서는 지양하는것이 좋음
  */
 
-class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     
     var list = ["이모티콘", "새싹" , "추석", "여기는 영등포 청취사 입니다.",
     "컬렉션 뷰"]
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewFlowLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureTagFlowLayout())
     
-    var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+    var dataSource: UICollectionViewDiffableDataSource<Int, PhotoResult>!
     
    
     
@@ -30,6 +31,38 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
         configureView()
         configureLayout()
         configureDataSource()
+        let bar = UISearchBar()
+        bar.delegate = self
+        navigationItem.titleView = bar
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Network.shared.requestConvertible(type: Photo.self, api: .search(query: searchBar.text!)) { response in
+            switch response {
+            case .success(let success):
+                // 데이터 + UI 스냅샷
+                
+                // 데이터가 가지고 있는 길이를 기준으로 비율 정도를 가지고 있음
+                let rations = success.results.map { Ratio(ratio: $0.width / $0.height)}
+                
+                // rations: 비율에 맞게끔 보여줘라
+                let layout = PinterestLayout(columnsCount: 2, itemRatios: rations, spacing: 10, contentWidth: self.view.frame.width)
+                
+                
+                // 성공할때마다 레이아웃을 바꿔야 함 -> 레이아웃 설정하고 스냅샷 설정 순서 중요 !
+                self.collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: layout.section)
+                self.configureSnapshot(success)
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
+    }
+    
+    func configureSnapshot(_ item: Photo) {
+        var snapShot = NSDiffableDataSourceSnapshot<Int,PhotoResult>()
+        snapShot.appendSections([0])
+        snapShot.appendItems(item.results)
+        dataSource.apply(snapShot)
     }
     
     func configureView() {
@@ -44,7 +77,51 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
     
     //  큰것부터 작은순으로 만들면 편함 section -> group -> item
     // section 별로 다른 layout을 설정할때 사용 aa
-    func configureCollectionViewFlowLayout() -> UICollectionViewLayout {
+    func configurePinterestLayout() -> UICollectionViewLayout {
+        
+        // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
+        // ..fractionalHeight , .absolute, .estimated(추정치)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .estimated(150))
+        // == Cell
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // fractionalWidth : 상대적인 길이
+        // absolute : 고정 값
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
+        // 가이드를 만들어서 Cell을 하나의 틀로 만들어줌 즉 , item을 배치해주는 역할
+        // repeatingSubitem : 반복하려는 Cell
+        // count : group에 몇개를 넣을거니?
+        // group : 수평으로 몇개의 item을 넣을거냐?
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+        
+        
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3)
+        // group내에 간격 설정
+        group.interItemSpacing = .fixed(10)
+        
+       // group을 감싸는 Section이 있음
+        let section = NSCollectionLayoutSection(group: group)
+        // contentInsets : CollecetionView 안으로 inset 설정
+        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
+        // group과 group 사이의 간격 조정
+        section.interGroupSpacing = 10
+        
+        // 레이아웃 환경 설정
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.scrollDirection = .vertical
+        
+        // section 설정 : collectionviw의 전체적인 레이아웃 설정 가능
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        layout.configuration = configuration
+        
+        return layout
+    }
+    
+    //  큰것부터 작은순으로 만들면 편함 section -> group -> item
+    // section 별로 다른 layout을 설정할때 사용 aa
+    func configureTagFlowLayout() -> UICollectionViewLayout {
         
         // group에서 높이를 먼저 고정시켜 놓으면 itemSize에서 fractionalHeight(1.0)하게되면 80과 동일
         // ..fractionalHeight , .absolute, .estimated(추정치)
@@ -87,22 +164,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegateFlowLayout
 //
     func configureDataSource() {
         
-        let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, String> { cell, indexPath, itemIdentifier in
+        let cellRegisteration = UICollectionView.CellRegistration<SearchCollectionViewCell, PhotoResult> { cell, indexPath, itemIdentifier in
             cell.imageView.image = UIImage(systemName: "flame")
-            cell.label.text = "\(itemIdentifier)번"
+            cell.imageView.kf.setImage(with: URL(string: itemIdentifier.urls.thumb)!)
+            cell.label.text = "\(itemIdentifier.created_at)번"
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegisteration, for: indexPath, item: itemIdentifier)
             return cell
         })
-        
-        var snapShot = NSDiffableDataSourceSnapshot<Int,String>()
-        snapShot.appendSections([0])
-        snapShot.appendItems(list)
-        dataSource.apply(snapShot)
-        
-        
     }
     
         //  큰것부터 작은순으로 만들면 편함 section -> group -> item

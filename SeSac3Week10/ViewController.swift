@@ -93,19 +93,21 @@ extension ViewController : UIScrollViewDelegate {
 }
 
 // Codable : Decodable(외부에 있는 데이터를 우리가 사용할 수 있는 형식으로 변환 ) + Encodable(우리가 가지고 있는 데이터를 변환후 외부로 전달 )
-struct Photo: Decodable {
+struct Photo: Decodable, Hashable {
     let total: Int
     let total_pages: Int
     let results: [PhotoResult]
 }
 
-struct PhotoResult: Decodable {
+struct PhotoResult: Decodable, Hashable {
     let id: String
     let created_at: String
     let urls: PhtoURL
+    let width: CGFloat
+    let height: CGFloat
 }
 
-struct PhtoURL :Decodable {
+struct PhtoURL :Decodable, Hashable {
     let full: String
     let thumb: String
 }
